@@ -1,0 +1,22 @@
+# ── Model artefacts (never commit — can exceed GitHub's 100 MiB limit) ───────
+model_cache/
+
+# ── Data ──────────────────────────────────────────────────────────────────────
+housing.csv
+input.csv
+output.csv
+*.pkl          # belt-and-suspenders: catch any stray pickle
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.env
+venv/
+.venv/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
