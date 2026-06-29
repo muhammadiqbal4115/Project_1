@@ -1,8 +1,3 @@
-"""
-California Housing Price Predictor — Streamlit App
-Production-ready: train on first run, persist locally, never commit model to git.
-"""
-
 import logging
 import os
 import time
@@ -421,6 +416,10 @@ html, body, [class*="css"] {
     color: #3b82f6;
     margin-bottom: .4rem;
     margin-top: 1.25rem;
+}
+            
+.e1yxiy6j6{
+    display: none;            
 }
 </style>
 """, unsafe_allow_html=True)
