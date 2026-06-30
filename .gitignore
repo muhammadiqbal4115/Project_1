@@ -2,7 +2,6 @@
 model_cache/
 
 # ── Data ──────────────────────────────────────────────────────────────────────
-housing.csv
 input.csv
 output.csv
 *.pkl          # belt-and-suspenders: catch any stray pickle

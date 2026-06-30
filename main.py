@@ -22,6 +22,7 @@ MODEL_DIR    = os.getenv("MODEL_DIR", "model_cache")
 MODEL_FILE   = os.path.join(MODEL_DIR, "model.pkl")
 PIPE_FILE    = os.path.join(MODEL_DIR, "pipeline.pkl")
 METRICS_FILE = os.path.join(MODEL_DIR, "metrics.pkl")
+DATA_FILE = "housing.csv"
 
 os.makedirs(MODEL_DIR, exist_ok=True)
 
@@ -438,25 +439,24 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     st.divider()
 
-    st.markdown("**Train model**")
-    train_file = st.file_uploader(
-        "housing.csv",
-        type="csv",
-        label_visibility="collapsed",
-        help="Raw Kaggle California housing dataset.",
-    )
+    # Load from disk if present, otherwise allow manual upload
+    if os.path.exists(DATA_FILE):
+        train_src = DATA_FILE
+        st.caption(f"✅ Found `{DATA_FILE}`")
+    else:
+        train_src = st.file_uploader("housing.csv", type="csv", label_visibility="collapsed")
 
-    if train_file:
-        if st.button("🚀 Start training", width="stretch"):
+    if st.button("🚀 Start training", width="stretch"):
+        if train_src is None:
+            st.error("No housing.csv found. Place it next to app.py or upload above.")
+        else:
             with st.spinner("Training… ~30 s on full dataset"):
                 t0  = time.time()
-                df  = pd.read_csv(train_file)
+                df  = pd.read_csv(train_src)   # works for both path string and file object
                 _m, _p, _met = train_model(df)
                 elapsed = time.time() - t0
             st.success(f"Done in {elapsed:.1f} s")
             st.cache_resource.clear()
-    else:
-        st.caption("Upload a CSV above to enable training.")
 
     st.divider()
 
@@ -608,7 +608,6 @@ with tab_single:
         <div class="pred-result">
             <div class="pred-label">Estimated market value</div>
             <div class="pred-value">${pred:,.0f}</div>
-            <div class="pred-sub">Random Forest · 100 estimators · stratified training</div>
         </div>
         """, unsafe_allow_html=True)
 
